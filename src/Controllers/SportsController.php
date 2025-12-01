@@ -1,21 +1,17 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controllers;
 
-use App\Repositories\SportsRepository;
+use PDO;
 
 class SportsController
 {
-    private \PDO $pdo;
-    private SportsRepository $repo;
-
-    public function __construct(\PDO $pdo)
-    {
-        $this->pdo = $pdo;
-        $this->repo = new SportsRepository($pdo);
-    }
+    public function __construct(private PDO $pdo) {}
 
     public function index(): array
     {
-        return $this->repo->all();
+        $stmt = $this->pdo->query("SELECT id, name FROM sports ORDER BY id");
+        return $stmt->fetchAll();
     }
 }

@@ -1,24 +1,25 @@
 <?php
+declare(strict_types=1);
+
+use OpenApi\Annotations as OA;
+
 /**
  * @OA\Info(
  *   version="1.0.0",
  *   title="Sport Courts API",
  *   description="API para gestão de esportes, disponibilidade e reservas"
  * )
- *
+ * @OA\Server(
+ *   url="http://localhost/sport-courts-api/public",
+ *   description="Apache XAMPP"
+ * )
  * @OA\Server(
  *   url="http://127.0.0.1:8080",
- *   description="Servidor local (PC)"
- * )
- *
- * @OA\Server(
- *   url="http://10.0.2.2:8080",
- *   description="Android Emulator"
+ *   description="Servidor embutido PHP"
  * )
  */
 
 /**
- * Sports
  * @OA\Get(
  *   path="/sports",
  *   tags={"Sports"},
@@ -32,9 +33,10 @@
  *       @OA\Property(
  *         property="data",
  *         type="array",
- *         @OA\Items(type="object",
+ *         @OA\Items(
+ *           type="object",
  *           @OA\Property(property="id", type="integer", example=1),
- *           @OA\Property(property="name", type="string", example="Futsal")
+ *           @OA\Property(property="name", type="string", example="Futebol")
  *         )
  *       )
  *     )
@@ -43,31 +45,20 @@
  */
 
 /**
- * Availability
  * @OA\Get(
  *   path="/availability",
  *   tags={"Availability"},
  *   summary="Consultar disponibilidade",
- *   @OA\Parameter(name="date", in="query", description="Data YYYY-MM-DD", required=false, @OA\Schema(type="string", example="2025-12-01")),
- *   @OA\Parameter(name="club_id", in="query", description="ID do clube", required=false, @OA\Schema(type="integer", example=1)),
- *   @OA\Parameter(name="sport_id", in="query", description="ID do esporte", required=false, @OA\Schema(type="integer", example=3)),
+ *   @OA\Parameter(name="date", in="query", required=false, @OA\Schema(type="string", example="2025-12-01")),
+ *   @OA\Parameter(name="club_id", in="query", required=false, @OA\Schema(type="integer", example=1)),
+ *   @OA\Parameter(name="sport_id", in="query", required=false, @OA\Schema(type="integer", example=3)),
  *   @OA\Response(
  *     response=200,
  *     description="Slots disponíveis",
  *     @OA\JsonContent(type="object",
  *       @OA\Property(property="status", type="string", example="success"),
  *       @OA\Property(property="data", type="array",
- *         @OA\Items(type="object",
- *           @OA\Property(property="court_id", type="integer", example=1),
- *           @OA\Property(property="court_name", type="string", example="Quadra Central"),
- *           @OA\Property(property="slots", type="array",
- *             @OA\Items(type="object",
- *               @OA\Property(property="start", type="string", example="2025-12-01 10:00:00"),
- *               @OA\Property(property="end", type="string", example="2025-12-01 11:00:00"),
- *               @OA\Property(property="price", type="number", example=70)
- *             )
- *           )
- *         )
+ *         @OA\Items(type="object")
  *       )
  *     )
  *   )
@@ -75,7 +66,6 @@
  */
 
 /**
- * Auth
  * @OA\Post(
  *   path="/auth/register",
  *   tags={"Auth"},
@@ -114,7 +104,7 @@
  *     @OA\JsonContent(type="object",
  *       @OA\Property(property="status", type="string", example="success"),
  *       @OA\Property(property="data", type="object",
- *         @OA\Property(property="token", type="string", example="BearerTokenExemploOpcional")
+ *         @OA\Property(property="token", type="string", example="BearerTokenExemplo")
  *       )
  *     )
  *   )
@@ -122,7 +112,6 @@
  */
 
 /**
- * Reservations
  * @OA\Post(
  *   path="/reservations",
  *   tags={"Reservations"},
@@ -152,7 +141,7 @@
  *   path="/reservations",
  *   tags={"Reservations"},
  *   summary="Listar reservas",
- *   @OA\Parameter(name="mine", in="query", description="Se true, lista reservas do usuário autenticado", required=false, @OA\Schema(type="string", example="true")),
+ *   @OA\Parameter(name="mine", in="query", required=false, @OA\Schema(type="string", example="true")),
  *   @OA\Response(
  *     response=200,
  *     description="Lista de reservas",

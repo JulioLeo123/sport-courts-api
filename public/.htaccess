@@ -1,5 +1,10 @@
 ﻿RewriteEngine On
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
 RewriteRule ^ index.php [QSA,L]
+
+# Garantir que Authorization chegue ao PHP
+SetEnvIfNoCase Authorization "^(.*)$" HTTP_AUTHORIZATION=$1
